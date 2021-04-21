@@ -10,9 +10,9 @@ class Game:
 
     def __init__(self):
         self._step = 15
-        self.snake = Snake(20, 30)
+        self.snake_elements_list = [Snake(375, 30), Snake(375, 15), Snake(375, 0)]
         self.run = True
-        self.movement_flag = 0
+        self.movement_flag = 4
         self.game_window = Window()
 
     def check_if_key_pressed(self):
@@ -26,6 +26,11 @@ class Game:
         if keys[pygame.K_DOWN] and self.movement_flag != 3:
             self.movement_flag = 4
 
+    def move_snake_body(self):
+        for i in range(len(self.snake_elements_list) - 1, 0, -1):
+            self.snake_elements_list[i].x = self.snake_elements_list[i - 1].x
+            self.snake_elements_list[i].y = self.snake_elements_list[i - 1].y
+
     def do_game(self):
         while self.run:
             pygame.time.delay(120)
@@ -34,11 +39,15 @@ class Game:
                     self.run = False
             # Key pressed
             self.check_if_key_pressed()
-            # Move snake
-            self.snake.move_snake(self.movement_flag, self._step)
-            # Clear game window
-            self.game_window.refill_game_window()
             # Draw snake
-            self.snake.draw_snake_element(self.game_window.get_window())
+            for x in self.snake_elements_list:
+                x.draw_snake_element(self.game_window.get_window())
             # Refresh game window
             pygame.display.update()
+            # Clear game window
+            self.game_window.refill_game_window()
+            # Move snake body
+            self.move_snake_body()
+            # Move snake head
+            self.snake_elements_list[0].move_snake_head(self.movement_flag, self._step)
+
