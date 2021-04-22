@@ -7,8 +7,8 @@ class Snake:
     """
 
     def __init__(self, x=20, y=20):
-        self._width = 15
-        self._height = 15
+        self._width = 20
+        self._height = 20
         self._color = (166, 174, 0)
         self.x = x
         self.y = y

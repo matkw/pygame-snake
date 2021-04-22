@@ -8,7 +8,7 @@ class Window:
 
     def __init__(self):
         pygame.display.set_caption("Snake")
-        self._width = 810
+        self._width = 800
         self._height = 600
         self._background = (0, 0, 0)
         self._window = pygame.display.set_mode((800, 600))

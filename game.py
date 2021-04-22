@@ -1,6 +1,7 @@
 import pygame
 from window import Window
 from snake import Snake
+from food import Food
 
 
 class Game:
@@ -9,11 +10,12 @@ class Game:
     """
 
     def __init__(self):
-        self._step = 15
-        self.snake_elements_list = [Snake(375, 30), Snake(375, 15), Snake(375, 0)]
+        self._step = 20
+        self.snake_elements_list = [Snake(380, 40), Snake(380, 20), Snake(380, 0)]
         self.run = True
         self.movement_flag = 4
         self.game_window = Window()
+        self.food = Food()
 
     def check_if_key_pressed(self):
         keys = pygame.key.get_pressed()
@@ -26,10 +28,24 @@ class Game:
         if keys[pygame.K_DOWN] and self.movement_flag != 3:
             self.movement_flag = 4
 
+    def eat_food(self):
+        if self.snake_elements_list[0].x == self.food.x - 10 and self.snake_elements_list[0].y == self.food.y - 10:
+            self.snake_elements_list.append(Snake(-100, -100))
+            self.food = Food()
+
+    def if_collision(self):
+        if self.snake_elements_list[0].x == self.game_window.get_width() \
+                or self.snake_elements_list[0].y == self.game_window.get_height():
+            self.movement_flag = 0
+
     def move_snake_body(self):
         for i in range(len(self.snake_elements_list) - 1, 0, -1):
             self.snake_elements_list[i].x = self.snake_elements_list[i - 1].x
             self.snake_elements_list[i].y = self.snake_elements_list[i - 1].y
+
+    def draw_snake(self):
+        for x in self.snake_elements_list:
+            x.draw_snake_element(self.game_window.get_window())
 
     def do_game(self):
         while self.run:
@@ -39,9 +55,12 @@ class Game:
                     self.run = False
             # Key pressed
             self.check_if_key_pressed()
+            #Check if colliion
+            self.if_collision()
+            # Draw food
+            self.food.draw_apple(self.game_window.get_window())
             # Draw snake
-            for x in self.snake_elements_list:
-                x.draw_snake_element(self.game_window.get_window())
+            self.draw_snake()
             # Refresh game window
             pygame.display.update()
             # Clear game window
@@ -50,4 +69,5 @@ class Game:
             self.move_snake_body()
             # Move snake head
             self.snake_elements_list[0].move_snake_head(self.movement_flag, self._step)
-
+            # Eat food
+            self.eat_food()
