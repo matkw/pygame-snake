@@ -33,10 +33,16 @@ class Game:
             self.snake_elements_list.append(Snake(-100, -100))
             self.food = Food()
 
-    def if_collision(self):
-        if self.snake_elements_list[0].x == self.game_window.get_width() \
-                or self.snake_elements_list[0].y == self.game_window.get_height():
-            self.movement_flag = 0
+    def if_collision(self):  # check this
+        if int(self.snake_elements_list[0].x) > int(self.game_window.get_width()) or int(
+                self.snake_elements_list[0].x) < 0 \
+                or int(self.snake_elements_list[0].y) < 0 or int(self.snake_elements_list[0].y) > \
+                int(self.game_window.get_height()):
+            exit(0)
+
+    def if_snake_hit_himself(self):
+        for i in self.snake_elements_list:
+            print('someone didnt ended this function')
 
     def move_snake_body(self):
         for i in range(len(self.snake_elements_list) - 1, 0, -1):
@@ -55,7 +61,7 @@ class Game:
                     self.run = False
             # Key pressed
             self.check_if_key_pressed()
-            #Check if colliion
+            # Check if colliion
             self.if_collision()
             # Draw food
             self.food.draw_apple(self.game_window.get_window())
