@@ -20,9 +20,9 @@ class Snake:
     def move_snake_head(self, movement_flag, step):
         if movement_flag == 1:
             self.x -= step
-        if movement_flag == 2:
+        elif movement_flag == 2:
             self.x += step
-        if movement_flag == 3:
+        elif movement_flag == 3:
             self.y -= step
-        if movement_flag == 4:
+        elif movement_flag == 4:
             self.y += step

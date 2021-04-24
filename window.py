@@ -19,9 +19,6 @@ class Window:
     def get_window(self):
         return self._window
 
-    def get_background(self):
-        return self._background
-
     def get_width(self):
         return self._width
 
