@@ -11,10 +11,12 @@ class Game:
 
     def __init__(self):
         self._step = 20
-        self.snake_elements_list = [Snake(380, 40), Snake(380, 20), Snake(380, 0)]
         self.run = True
         self.movement_flag = 4
         self.game_window = Window()
+        self.snake_elements_list = [Snake(self.game_window.get_width() / 2 - self._step, self._step * 2),
+                                    Snake(self.game_window.get_width() / 2 - self._step, self._step),
+                                    Snake(self.game_window.get_width() / 2 - self._step, 0)]
         self.food = Food()
 
     def check_if_key_pressed(self):
@@ -28,12 +30,28 @@ class Game:
         if keys[pygame.K_DOWN] and self.movement_flag != 3:
             self.movement_flag = 4
 
-    def eat_food(self):
+    def if_snake_eat_food(self):
         if self.snake_elements_list[0].x == self.food.x - 10 and self.snake_elements_list[0].y == self.food.y - 10:
             self.snake_elements_list.append(Snake(-100, -100))
-            self.food = Food()
+            return True
+        return False
 
-    def if_collision(self):  # check this
+    def create_food(self):
+        self.food = Food()
+
+    def if_food_spawn_on_snake(self):
+        for i in self.snake_elements_list:
+            if i.x == self.food.x and i.y == self.food.y:
+                return True
+        return False
+
+    def eat_food(self):
+        if self.if_snake_eat_food():
+            self.create_food()
+            while self.if_food_spawn_on_snake():
+                self.create_food()
+
+    def if_collision(self):
         if int(self.snake_elements_list[0].x) >= int(self.game_window.get_width()) or int(
                 self.snake_elements_list[0].x) < 0 \
                 or int(self.snake_elements_list[0].y) < 0 or int(self.snake_elements_list[0].y) >= \
@@ -63,7 +81,7 @@ class Game:
                     self.run = False
             # Key pressed
             self.check_if_key_pressed()
-            # Check if colliion
+            # Check if collision
             self.if_collision()
             # Check if snake hit himself
             self.if_snake_hit_himself()

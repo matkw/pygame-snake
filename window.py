@@ -11,7 +11,7 @@ class Window:
         self._width = 800
         self._height = 600
         self._background = (0, 0, 0)
-        self._window = pygame.display.set_mode((800, 600))
+        self._window = pygame.display.set_mode((self._width, self._height))
 
     def refill_game_window(self):
         self._window.fill(self._background)
